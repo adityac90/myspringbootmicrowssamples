@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+
+	<import resource="anotherSpringConfig.xml" />
+	<context:property-placeholder location="classpath:training.properties"/>
+	<!-- Depends on -->
+	<bean id="springTraining-One" class="org.cts.pojo.SpringTraining"
+		depends-on="webexDetails">
+		<property name="trainingName" value="Spring Core Module"></property>
+		<property name="trainer" value="Aditya Chakraborty"></property>
+		<property name="noOfTrainees" value="14"></property>
+		<property name="webex" ref="webexDetails"></property>
+	</bean>
+
+	<!-- Lazy init -->
+	<bean id="springTraining-Two" class="org.cts.pojo.SpringTraining"
+		p:trainingName="Spring Core Module" p:trainer="Aditya Chakraborty"
+		p:noOfTrainees="10" p:webex-ref="webexDetails" lazy-init="true" />
+
+
+	<!-- Prototype scoped bean -->
+	<bean id="webexConnections" class="org.cts.pojo.WebexConnection"
+		scope="prototype">
+		<property name="connectionID" value="C234464646"></property>
+	</bean>
+
+	<alias name="webexConnections" alias="wc" />
+
+	<!-- Autowiring -->
+	<bean id="springTraining-Three"
+		class="org.cts.pojo.SpringTraining" depends-on="webexDetails"
+		autowire="byType">
+		<property name="trainingName" value="Spring Core Module"></property>
+		<property name="trainer" value="Aditya Chakraborty"></property>
+		<property name="noOfTrainees" value="14"></property>
+		<!-- <property name="webex" ref="webexDetails"></property> -->
+	</bean>
+
+	<!-- <bean id="mySingleTon" class="org.cts.pojo.Singleton" scope="singleton" 
+		autowire="constructor"></bean> <bean id="myProtoType" class="org.cts.pojo.Prototype" 
+		scope="prototype" autowire-candidate="true"></bean> -->
+
+	<bean id="prototype" class="org.cts.pojo.Prototype"
+		scope="prototype" />
+
+	<bean id="mySingleTon" class="org.cts.pojo.Singleton">
+		<lookup-method name="createPrototype" bean="prototype" />
+	</bean>
+
+	<!-- customizing config metadata with BeanFactoryPostProcessor -->
+	<bean id="springTraining-Special"
+		class="org.cts.pojo.SpringTraining">
+		<property name="trainingName" value="${trainingName}"></property>
+		<property name="trainer" value="${trainer}"></property>
+		<property name="noOfTrainees" value="${noOfTrainees}"></property>
+
+	</bean>
+
+
+</beans>
