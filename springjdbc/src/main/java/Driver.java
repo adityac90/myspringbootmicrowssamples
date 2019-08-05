@@ -18,7 +18,7 @@ public class Driver {
         employee.setDepartment("IT");
         /*Boolean status = employeeServices.createEmployee(employee);
         System.out.println("Created Employee Successfully :: " + status);*/
-        System.out.println("===================Trying to fetch employee detils=================");
+        System.out.println("===================Trying to fetch employee details=================");
         List<Employee> employeeDetails = employeeServices.getEmployeeDetails();
         employeeDetails.stream().forEach(System.out::println);
 

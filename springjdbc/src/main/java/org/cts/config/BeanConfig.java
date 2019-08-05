@@ -5,9 +5,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -15,6 +16,7 @@ import javax.sql.DataSource;
 @ComponentScan(basePackages = "org.cts")
 @PropertySource("classpath:db.properties")
 public class BeanConfig {
+
     @Value("${mysql.driverName}")
     private String mySqlDriver;
     @Value("${mysql.connector-URL}")
@@ -23,6 +25,7 @@ public class BeanConfig {
     private String mySqluserName;
     @Value("${mysql.passWord}")
     private String mySqlPassword;
+
 
     /* @Bean
      public DataSource dataSource() {
@@ -52,5 +55,12 @@ public class BeanConfig {
     @Bean
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager();
+        dataSourceTransactionManager.setDataSource(dataSource());
+        return dataSourceTransactionManager;
     }
 }
