@@ -38,11 +38,11 @@ public class LicenseServiceImpl implements LicenseService {
         //uncomment this Thread.sleep to see circuit breaker behavior of hystrix
         //If any call by default takes more than 1000ms it will trip the circuit
         //you can also override this using execution.isolation.thread.timeoutInMilliSeconds property
-        try {
-            Thread.sleep(1500);
+       /* try {
+            Thread.sleep(1100);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 
         return licenseDetailsRepository.findAll();
     }
