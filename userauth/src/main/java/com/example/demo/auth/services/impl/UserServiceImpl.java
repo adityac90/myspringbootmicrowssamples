@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User finduUserByEmail(String email) {
-        User byEmailID = userRepository.findByEmailID(email);
+        User byEmailID = userRepository.findByEmail(email);
         if (byEmailID == null) {
             throw new UsernameNotFoundException(email);
         }
@@ -31,11 +31,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User byEmailID = userRepository.findByEmailID(s);
+        User byEmailID = userRepository.findByEmail(s);
         if (byEmailID == null) {
             throw new UsernameNotFoundException(s);
         }
-        final org.springframework.security.core.userdetails.User user = new org.springframework.security.core.userdetails.User(byEmailID.getEmailID(), byEmailID.getPassword(), true, true, true, true, new ArrayList<>());
+        final org.springframework.security.core.userdetails.User user = new org.springframework.security.core.userdetails.User(byEmailID.getEmail(), byEmailID.getPassword(), true, true, true, true, new ArrayList<>());
         return user;
     }
 }

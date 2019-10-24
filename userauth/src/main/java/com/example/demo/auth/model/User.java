@@ -2,12 +2,10 @@ package com.example.demo.auth.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Component
 @Getter
@@ -16,17 +14,29 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "USER_DETAIL")
+@Table(name = "USER_DETAIL", schema = "testDB")
 public class User {
     @Id
-    @GeneratedValue
-    private long userId;
+    @GeneratedValue(
+            strategy = GenerationType.AUTO,
+            generator = "native"
+    )
+    @GenericGenerator(
+            name = "native",
+            strategy = "native"
+    )
+    @Column(name = "user_id", nullable = false)
+    private long user_id;
     @JsonProperty("email")
-    private String emailID;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "user_name")
     @JsonProperty("username")
-    private String userName;
+    private String user_name;
+    @Column(name = "password")
     @JsonProperty("pwd")
     private String password;
+    @Column(name = "date_of_birth")
     @JsonProperty("dob")
-    private String dateOfBirth;
+    private String date_of_birth;
 }

@@ -52,7 +52,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         final String email = ((User) authResult.getPrincipal()).getUsername();
         com.example.demo.auth.model.User user = userService.finduUserByEmail(email);
-        String token = Jwts.builder().setSubject(user.getUserName()).setExpiration(new Date(System.currentTimeMillis() + environment.getProperty("token.expiration.time", Long.class)))
+        String token = Jwts.builder().setSubject(user.getUser_name()).setExpiration(new Date(System.currentTimeMillis() + environment.getProperty("token.expiration.time", Long.class)))
                 .signWith(SignatureAlgorithm.HS512, environment.getProperty("token.secret")).compact();
         response.addHeader("token", token);
     }
