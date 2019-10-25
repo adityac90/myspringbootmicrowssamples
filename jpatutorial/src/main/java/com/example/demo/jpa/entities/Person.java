@@ -20,5 +20,8 @@ public class Person {
     private String lastName;
     private String gender;
     private int age;
+    @OneToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
 
 }
