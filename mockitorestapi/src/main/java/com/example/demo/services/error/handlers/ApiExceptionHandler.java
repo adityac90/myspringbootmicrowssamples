@@ -6,10 +6,12 @@ package com.example.demo.services.error.handlers;
 import java.time.ZonedDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 
 import com.example.demo.services.error.ApiErrorResponse;
 import com.example.demo.services.error.manufacturer.ManufactuerNotFoundException;
@@ -36,6 +38,14 @@ public class ApiExceptionHandler {
 	public ResponseEntity<ApiErrorResponse> handlerManufactuerNotSavedException(Exception ex) {
 		apiErrorResponse.setErrorCode("9101");
 		apiErrorResponse.setErrorMsg(ex.getLocalizedMessage());
+		apiErrorResponse.setTimeStamp(ZonedDateTime.now());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
+	}
+
+	@ExceptionHandler(DataAccessException.class)
+	public ResponseEntity<ApiErrorResponse> handleDataAccessException(Exception ex, WebRequest request) {
+		apiErrorResponse.setErrorCode("8452");
+		apiErrorResponse.setErrorMsg(ex.getLocalizedMessage() + " - " + request.getDescription(true));
 		apiErrorResponse.setTimeStamp(ZonedDateTime.now());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
 	}
