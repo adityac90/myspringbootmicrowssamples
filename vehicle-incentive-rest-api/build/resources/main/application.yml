@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: vehicle-incentive
+  profiles:
+    active: dev

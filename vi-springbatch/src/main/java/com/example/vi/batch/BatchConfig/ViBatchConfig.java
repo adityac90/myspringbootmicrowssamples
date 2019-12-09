@@ -87,7 +87,7 @@ public class ViBatchConfig {
                 .build();
     }
 
-    @Bean
+    @Bean(name = "writeToCSVJob")
     public Job writeTutorialsDataJob() {
         return jobBuilderFactory.get("write-tutorial-data-job")
                 .incrementer(new RunIdIncrementer())
